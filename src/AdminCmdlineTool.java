@@ -80,6 +80,7 @@ public class AdminCmdlineTool {
                         break;
                     case 9:
                         checkStateChange();
+                        break;
                     case 10:
                         break loop;
                     default:
