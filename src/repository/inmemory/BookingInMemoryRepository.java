@@ -21,7 +21,8 @@ public class BookingInMemoryRepository implements BookingRepository {
 
     @Override
     public Booking get(int bookingId) {
-        return bookings.get(bookingId);
+        if (bookingId < 1 || bookingId > count.get()) throw new IllegalArgumentException("booking id invalid");
+        return bookings.get(bookingId - 1);
     }
 
     @Override
