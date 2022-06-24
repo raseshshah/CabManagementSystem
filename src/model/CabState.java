@@ -1,3 +1,3 @@
 package model;
 
-public enum CabState {IDLE, ON_TRIP;}
+public enum CabState {IDLE, OFFLINE, ON_TRIP;}

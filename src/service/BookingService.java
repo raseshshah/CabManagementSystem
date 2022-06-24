@@ -36,6 +36,9 @@ public record BookingService(CabRepository cabRepository, LocationRepository loc
 
     public void releaseACab(Booking booking) {
         if (booking.status() == BookingStatus.FAIL) throw new IllegalArgumentException("booking wasn't successful");
+        if(!cabRepository.get(booking.cab().id()).state().equals(CabState.ON_TRIP)) {
+            throw new IllegalArgumentException("cannot already released cab");
+        }
         cabRepository.replace(booking.cab(), booking.cab().withStateAndCity(CabState.IDLE, booking.destination()));
     }
 }

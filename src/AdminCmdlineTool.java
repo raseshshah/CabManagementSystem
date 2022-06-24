@@ -168,6 +168,9 @@ public class AdminCmdlineTool {
     }
 
     static void checkBookingDemand() {
-        System.out.println(bookingRepository.getLocationAndTimeWhichHasHigherDemand());
+        String[] arg = parseCommaSeparateInput(in, 2);
+        long startTs = Long.parseLong(arg[0]);
+        long endTs = Long.parseLong(arg[1]);
+        System.out.println(bookingRepository.getLocationAndTimeWhichHasHigherDemand(startTs, endTs));
     }
 }

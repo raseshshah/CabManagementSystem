@@ -26,9 +26,9 @@ public class BookingInMemoryRepository implements BookingRepository {
     }
 
     @Override
-    public Optional<NoOfBookingRequestsInLocation> getLocationAndTimeWhichHasHigherDemand() {
+    public Optional<NoOfBookingRequestsInLocation> getLocationAndTimeWhichHasHigherDemand(long startTs, long endTs) {
         Calendar c = Calendar.getInstance();
-        Map<NoOfBookingRequestsInLocation, Long> grp = bookings.stream().collect(Collectors.groupingBy((b) -> {
+        Map<NoOfBookingRequestsInLocation, Long> grp = bookings.stream().filter(b -> b.timestamp() >= startTs && b.timestamp() <= endTs).collect(Collectors.groupingBy((b) -> {
             c.setTimeInMillis(b.timestamp());
             return new NoOfBookingRequestsInLocation(b.source(), c.get(Calendar.HOUR));
         }, Collectors.counting()));

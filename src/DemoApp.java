@@ -49,7 +49,7 @@ public class DemoApp {
         statusOfAllCabs("after releasing cabs");
         idleTimeForCabs();
         stateChanges();
-        System.out.println("demand: " + bookingRepository.getLocationAndTimeWhichHasHigherDemand());
+        //System.out.println("demand: " + bookingRepository.getLocationAndTimeWhichHasHigherDemand());
     }
 
     public static void initDatabase() {
