@@ -59,9 +59,9 @@ public class DemoApp {
     }
 
     public static void doBookings() {
-        bookingService.bookACab(cities[0], cities[1]);
-        bookingService.bookACab(cities[0], cities[2]);
-        bookingService.bookACab(cities[1], cities[2]);
+        bookingService.bookACab(cities[0], cities[1], 0);
+        bookingService.bookACab(cities[0], cities[2], 0);
+        bookingService.bookACab(cities[1], cities[2], 0);
     }
 
     public static void releaseCabs() {

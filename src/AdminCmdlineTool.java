@@ -43,7 +43,8 @@ public class AdminCmdlineTool {
         System.out.println("7. check idle time of the cab (cab_id)");
         System.out.println("8. find the city and hour which is having highest booking demand");
         System.out.println("9. check cab state change log (cab_id)");
-        System.out.println("10. exit");
+        System.out.println("10. check cab earning between two time through bookings. (cab_id, start_ts, end_ts)");
+        System.out.println("11. exit");
     }
 
     public static void main(String[] args) {
@@ -82,6 +83,9 @@ public class AdminCmdlineTool {
                         checkStateChange();
                         break;
                     case 10:
+                        checkCabEarningFromBookings();
+                        break;
+                    case 11:
                         break loop;
                     default:
                         throw new IllegalArgumentException("invalid cmd");
@@ -137,8 +141,8 @@ public class AdminCmdlineTool {
     }
 
     static void bookACab() {
-        String[] ins = parseCommaSeparateInput(in, 2);
-        Booking booking = bookingService.bookACab(locationRepository.get(Integer.parseInt(ins[0])), locationRepository.get(Integer.parseInt(ins[1])));
+        String[] ins = parseCommaSeparateInput(in, 3);
+        Booking booking = bookingService.bookACab(locationRepository.get(Integer.parseInt(ins[0])), locationRepository.get(Integer.parseInt(ins[1])), Long.parseLong(ins[2]));
         System.out.println(booking);
     }
 
@@ -159,12 +163,12 @@ public class AdminCmdlineTool {
 
     static void checkIdleTime() {
         String arg = parseCommaSeparateInput(in, 1)[0];
-        System.out.println(cabStateChangeRepository.totalIdleTimeInGivenDuration(arg, Instant.now().minusSeconds(2 * 60 * 60).toEpochMilli(), Instant.now().toEpochMilli())+" ms");
+        System.out.println(cabStateChangeRepository.totalIdleTimeInGivenDuration(arg, Instant.now().minusSeconds(2 * 60 * 60).toEpochMilli(), Instant.now().toEpochMilli()) + " ms");
     }
 
     static void checkStateChange() {
         String arg = parseCommaSeparateInput(in, 1)[0];
-        System.out.println(cabStateChangeRepository.logs(arg, Instant.now().minusSeconds(2 * 60 * 60).toEpochMilli(), Instant.now().toEpochMilli())+" ms");
+        System.out.println(cabStateChangeRepository.logs(arg, Instant.now().minusSeconds(2 * 60 * 60).toEpochMilli(), Instant.now().toEpochMilli()) + " ms");
     }
 
     static void checkBookingDemand() {
@@ -172,5 +176,13 @@ public class AdminCmdlineTool {
         long startTs = Long.parseLong(arg[0]);
         long endTs = Long.parseLong(arg[1]);
         System.out.println(bookingRepository.getLocationAndTimeWhichHasHigherDemand(startTs, endTs));
+    }
+
+    static void checkCabEarningFromBookings() {
+        String[] arg = parseCommaSeparateInput(in, 3);
+        Cab cab = cabRepository.get(arg[0]);
+        long startTs = Long.parseLong(arg[1]);
+        long endTs = Long.parseLong(arg[2]);
+        System.out.println(bookingRepository.totalEarningFromBookings(cab, startTs, endTs));
     }
 }
